@@ -16,11 +16,5 @@ body {
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
-  }
-
-  button {
-    cursor: pointer;
-    margin: 30px;
-    border-radius: 10px;
-  }
+  }  
 `;
