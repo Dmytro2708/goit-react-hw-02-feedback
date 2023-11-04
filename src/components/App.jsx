@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import { GlobalStyle } from './GlobalStyle';
-
+import { Section } from './Section/Section';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
+import { Statistics } from './Statistics/Statistics';
+import { Notification } from './Notification/Notification';
 
 export class App extends Component {
   state = {
@@ -10,11 +12,27 @@ export class App extends Component {
     bad: 0,
   };
 
+  handleFeedback = e => {
+    const { good, bad, neutral } = this.state;
+    return good + bad + neutral;
+  };
+
+  countTotalFeedback = () => {
+    let total = this.state.good + this.state.neutral + this.state.bad;
+    return total;
+  };
+
+  positivePercentage = () => {
+    const { good, bad, neutral } = this.state;
+    console.log(good);
+    let count = 0;
+    count = (good / (good + bad + neutral)) * 100;
+    return Math.round(count);
+  };
+
   updateGood = () => {
     this.setState(prevState => {
-      return {
-        good: prevState.good + 1,
-      };
+      return { good: prevState.good + 1 };
     });
   };
 
@@ -33,31 +51,31 @@ export class App extends Component {
       };
     });
   };
-  
 
   render() {
-    const { good, neutral, bad } = this.state;
-    const Total = good + neutral + bad;
-    const Positive = Math.round((good / Total) * 100);
-
     return (
       <div>
-        <p>Please leave feedback</p>
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            positive={this.updateGood}
+            negative={this.updateBad}
+            neutral={this.updateNeutral}
+          />
+        </Section>
 
-        <FeedbackOptions
-          positive={this.updateGood}
-          negative={this.updateBad}
-          neutral={this.updateNeutral}
-        />
-
-<h2>Statistics</h2>
-        
-        {Total!==0 ? (<> <p>good : {good}</p>
-        <p>neutral : {neutral}</p>
-        <p>bad : {bad}</p>
-        <p>Total : {Total}</p>
-        <p>Positive feedback : {Positive}%</p></>) : ( <p>There is no feedback</p>)                }
-
+        <Section title="Statistics">
+          {this.countTotalFeedback() !== 0 ? (
+            <Statistics
+              good={this.state.good}
+              neutral={this.state.neutral}
+              bad={this.state.bad}
+              Total={this.countTotalFeedback()}
+              Positive={this.positivePercentage()}
+            />
+          ) : (
+            <Notification message="There is no feedback"></Notification>
+          )}
+        </Section>
         <GlobalStyle />
       </div>
     );
