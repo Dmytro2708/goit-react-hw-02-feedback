@@ -7,12 +7,14 @@ export const BtnFeedback = styled.button`
     margin-bottom: 10px;
     border-radius: 10px;
     border: none;
-    padding: 5px;
+    font-size: 20px;
+    padding: 20px 40px;
     background-color: orange;
 
      &:hover {
         background-color: blueviolet;
         color: #fff;
+        transform: scale(1.1);
     }
     
 `;
